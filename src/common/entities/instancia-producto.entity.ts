@@ -2,22 +2,36 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Producto } from './producto.entity';
+import { Ubicacion } from './ubicacion.entity';
 
 @Entity()
-export class Categoria {
+export class InstanciaProducto {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  nombre: string;
+  @ManyToOne(() => Producto, (producto) => producto.instanciasProducto, {
+    eager: true,
+  })
+  producto: Producto;
 
-  @Column({ nullable: true })
-  descripcion: string;
+  @ManyToOne(() => Ubicacion, (ubicacion) => ubicacion.instanciasProducto, {
+    eager: true,
+  })
+  ubicacion: Ubicacion;
+
+  @Column('int')
+  cantidad: number;
+
+  @Column('date')
+  fechaDeCompra: Date;
+
+  @Column('date')
+  fechaDeVencimiento: Date;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -31,7 +45,4 @@ export class Categoria {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   updatedAt: Date;
-
-  @OneToMany(() => Producto, (producto) => producto.categoria)
-  productos: Producto[];
 }

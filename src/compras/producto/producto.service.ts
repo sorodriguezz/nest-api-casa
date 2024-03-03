@@ -15,15 +15,15 @@ export class ProductoService {
     return this.productoRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} producto`;
+  findOne(id: string) {
+    return this.productoRepository.findOne(id);
   }
 
-  update(id: number, updateProductoDto: UpdateProductoDto) {
-    return `This action updates a #${id} producto`;
+  update(id: string, updateProductoDto: UpdateProductoDto) {
+    return this.productoRepository.update(id, updateProductoDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} producto`;
+  remove(id: string) {
+    return this.productoRepository.delete(id);
   }
 }

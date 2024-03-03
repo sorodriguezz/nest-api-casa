@@ -1,13 +1,14 @@
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
   CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Categoria } from './categoria.entity';
-import { Ubicacion } from './ubicacion.entity';
+import { InstanciaProducto } from './instancia-producto.entity';
 
 @Entity()
 export class Producto {
@@ -19,15 +20,6 @@ export class Producto {
 
   @Column({ nullable: true })
   marca: string;
-
-  @Column('int')
-  cantidad: number;
-
-  @Column('date')
-  fechaDeCompra: Date;
-
-  @Column('date')
-  fechaDeVencimiento: Date;
 
   @Column({ nullable: true })
   descripcion: string;
@@ -45,9 +37,14 @@ export class Producto {
   })
   updatedAt: Date;
 
-  @ManyToOne(() => Categoria, (categoria) => categoria.productos)
+  @ManyToOne(() => Categoria, (categoria) => categoria.productos, {
+    eager: true,
+  })
   categoria: Categoria;
 
-  @ManyToOne(() => Ubicacion, (ubicacion) => ubicacion.productos)
-  ubicacion: Ubicacion;
+  @OneToMany(
+    () => InstanciaProducto,
+    (instanciaProducto) => instanciaProducto.producto,
+  )
+  instanciasProducto: InstanciaProducto[];
 }
